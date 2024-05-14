@@ -21,11 +21,11 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
-      - name: Set up .NET
-        uses: actions/setup-dotnet@3447fd6a9f9e57506b15f895c5b76d3b197dc7c2 # v3.2.0
+      - name: Lint codebase
+        run: make lint
 
-      - name: Verify format
-        run: dotnet format --verify-no-changes
+      - name: ERROR
+        run: exit 1
 
   build-docker:
     name: Build Docker images
