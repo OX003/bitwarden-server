@@ -24,9 +24,6 @@ jobs:
       - name: Lint codebase
         run: make lint
 
-      - name: ERROR
-        run: exit 1
-
   build-docker:
     name: Build Docker images
     runs-on: ubuntu-22.04
@@ -82,6 +79,17 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      - name: Set up environment variables
+        run: |
+          echo "PROJECT_NAME=$(echo '${{ matrix.project_name }}' | awk '{print tolower($0)}')" >> $GITHUB_ENV
+          echo "DOCKER_FILE=$(echo '${{ matrix.base_path }}/${{ matrix.project_name }}/Dockerfile')" >> $GITHUB_ENV
+
+      - name: Build
+        run: make build
+
+      - name: Exit Early
+        run: exit 1
 
       - name: Check branch to publish
         env:
