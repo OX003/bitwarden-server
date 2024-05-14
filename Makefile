@@ -3,7 +3,7 @@ all: lint test build
 
 .PHONY: lint
 lint:
-	dotnet format --verify-no-changes
+	dotnet format --verify-no-changes --verbosity diagnostic
 
 .PHONY: test
 test:
