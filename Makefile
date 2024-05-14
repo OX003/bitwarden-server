@@ -1,18 +1,18 @@
-.PHONY all
+.PHONY: all
 all: lint test build
 
-.PHONY lint
+.PHONY: lint
 lint:
 	dotnet format --verify-no-changes
 
-.PHONY test
+.PHONY: test
 test:
 	echo "Testing"
 
-.PHONY build
+.PHONY: build
 build:
 	echo "Building"
 
-.PHONY clean
+.PHONY: clean
 clean:
 	echo "Cleaning"
