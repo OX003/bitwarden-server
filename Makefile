@@ -1,3 +1,5 @@
+SHELL := /bin/bash
+
 .PHONY: all
 all: lint test build
 
