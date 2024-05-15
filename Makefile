@@ -19,10 +19,10 @@ build:
 	echo "### :mega: Docker Image Tag: $$IMAGE_TAG" >> $$GITHUB_STEP_SUMMARY
 	FULL_IMAGE_NAME=$${AZ_REGISTRY}/$${PROJECT_NAME}:$${IMAGE_TAG}
 	CACHE_IMAGE_NAME=$${AZ_REGISTRY}/$${PROJECT_NAME}:buildcache
-	docker build --cache-from type=registry,ref=$$CACHE_IMAGE_NAME \
-	  --cache-to type=registry,ref=$$CACHE_IMAGE_NAME,mode=max \
+	docker build --cache-from "type=registry,ref=$$CACHE_IMAGE_NAME" \
+	  --cache-to "type=registry,ref=$$CACHE_IMAGE_NAME,mode=max" \
 	  --file $$DOCKER_FILE \
-	  --platform linux/amd64,linux/arm/v7,linux/arm64 \
+	  --platform "linux/amd64,linux/arm/v7,linux/arm64" \
 	  --push \
 	  --tag $$FULL_IMAGE_NAME \
 	  .
