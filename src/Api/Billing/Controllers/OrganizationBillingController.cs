@@ -1,8 +1,6 @@
 ﻿using Bit.Api.Billing.Models.Responses;
-using Bit.Api.Models.Response;
 using Bit.Core.Billing.Queries;
 using Bit.Core.Context;
-using Bit.Core.Exceptions;
 using Bit.Core.Repositories;
 using Bit.Core.Services;
 using Bit.Core.Utilities;
@@ -34,22 +32,37 @@ public class OrganizationBillingController(
         return TypedResults.Ok(response);
     }
 
+    [HttpGet("history")]
+    public async Task<IResult> GetHistoryAsync([FromRoute] Guid organizationId)
+    {
+        var organization = await organizationRepository.GetByIdAsync(organizationId);
+
+        if (organization == null)
+        {
+            return TypedResults.NotFound();
+        }
+
+        var billingInfo = await paymentService.GetBillingHistoryAsync(organization);
+
+        return TypedResults.Ok(billingInfo);
+    }
+
     [HttpGet]
     [SelfHosted(NotSelfHostedOnly = true)]
-    public async Task<BillingResponseModel> GetBilling(Guid organizationId)
+    public async Task<IResult> GetBillingAsync(Guid organizationId)
     {
         if (!await currentContext.ViewBillingHistory(organizationId))
         {
-            throw new NotFoundException();
+            return TypedResults.NotFound();
         }
 
         var organization = await organizationRepository.GetByIdAsync(organizationId);
         if (organization == null)
         {
-            throw new NotFoundException();
+            return TypedResults.NotFound();
         }
 
         var billingInfo = await paymentService.GetBillingAsync(organization);
-        return new BillingResponseModel(billingInfo);
+        return TypedResults.Ok(billingInfo);
     }
 }
